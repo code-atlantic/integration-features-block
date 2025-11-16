@@ -29,6 +29,15 @@
 		"isOpen": {
 			"type": "boolean",
 			"default": false
+		},
+		"iconStyle": {
+			"type": "string",
+			"enum": ["chevron", "plus-minus"],
+			"default": "chevron"
+		},
+		"showFreeBadge": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

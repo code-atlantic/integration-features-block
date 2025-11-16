@@ -8,12 +8,19 @@
 export type TierType = 'free' | 'pro' | 'proplus';
 
 /**
+ * Icon style types for accordion indicator
+ */
+export type IconStyleType = 'chevron' | 'plus-minus';
+
+/**
  * Block attributes interface
  */
 export interface IntegrationFeatureAttributes {
 	tier: TierType;
 	label: string;
 	isOpen: boolean;
+	iconStyle: IconStyleType;
+	showFreeBadge: boolean;
 }
 
 /**

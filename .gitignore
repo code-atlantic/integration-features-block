@@ -46,3 +46,4 @@ uploads/
 # Deployment
 *.zip
 release/
+scripts/  # Local deployment scripts with environment-specific paths

@@ -33,7 +33,7 @@ const TIER_CONFIG: Record<TierType, TierConfig> = {
  * to ensure deterministic save output matches content state.
  */
 export default function Save({ attributes }: SaveProps) {
-	const { tier, label } = attributes;
+	const { tier, label, iconStyle, showFreeBadge } = attributes;
 
 	/**
 	 * InnerBlocks props for description content
@@ -56,6 +56,12 @@ export default function Save({ attributes }: SaveProps) {
 	const currentTier = TIER_CONFIG[tier] || TIER_CONFIG.free;
 
 	/**
+	 * Get accordion icon based on style
+	 * Frontend always renders closed state
+	 */
+	const icon = iconStyle === 'plus-minus' ? '+' : '▼';
+
+	/**
 	 * Block wrapper props
 	 */
 	const blockProps = useBlockProps.save({
@@ -70,10 +76,12 @@ export default function Save({ attributes }: SaveProps) {
 		return (
 			<details {...blockProps}>
 				<summary className="pm-integration-feature__header">
-					{/* Tier Badge */}
-					<span className={`pm-tier-badge ${currentTier.className}`}>
-						{currentTier.label}
-					</span>
+					{/* Tier Badge - conditionally hidden for FREE tier */}
+					{(tier !== 'free' || showFreeBadge) && (
+						<span className={`pm-tier-badge ${currentTier.className}`}>
+							{currentTier.label}
+						</span>
+					)}
 
 					{/* Feature Label */}
 					<RichText.Content
@@ -84,7 +92,7 @@ export default function Save({ attributes }: SaveProps) {
 
 					{/* Accordion Icon */}
 					<span className="pm-integration-feature__icon" aria-hidden="true">
-						▼
+						{icon}
 					</span>
 				</summary>
 
@@ -98,10 +106,12 @@ export default function Save({ attributes }: SaveProps) {
 	return (
 		<div {...blockProps}>
 			<div className="pm-integration-feature__header">
-				{/* Tier Badge */}
-				<span className={`pm-tier-badge ${currentTier.className}`}>
-					{currentTier.label}
-				</span>
+				{/* Tier Badge - conditionally hidden for FREE tier */}
+				{(tier !== 'free' || showFreeBadge) && (
+					<span className={`pm-tier-badge ${currentTier.className}`}>
+						{currentTier.label}
+					</span>
+				)}
 
 				{/* Feature Label */}
 				<RichText.Content

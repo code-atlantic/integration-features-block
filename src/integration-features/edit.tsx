@@ -44,7 +44,7 @@ const TIER_CONFIG: Record<TierType, TierConfig> = {
  * Uses derived state pattern for hasDescription to avoid useEffect feedback loops
  */
 export default function Edit({ attributes, setAttributes, clientId }: EditProps) {
-	const { tier, label, isOpen } = attributes;
+	const { tier, label, isOpen, iconStyle, showFreeBadge } = attributes;
 
 	/**
 	 * Get inner blocks using WordPress data selector
@@ -88,6 +88,16 @@ export default function Edit({ attributes, setAttributes, clientId }: EditProps)
 	};
 
 	/**
+	 * Get accordion icon based on style and open state
+	 */
+	const getIcon = () => {
+		if (iconStyle === 'plus-minus') {
+			return isOpen ? '−' : '+';
+		}
+		return isOpen ? '▲' : '▼';
+	};
+
+	/**
 	 * Block wrapper props
 	 */
 	const blockProps = useBlockProps({
@@ -117,7 +127,7 @@ export default function Edit({ attributes, setAttributes, clientId }: EditProps)
 
 	return (
 		<>
-			{/* Format Toolbar - Tier Badge Selector */}
+			{/* Format Toolbar - Tier Badge and Icon Style Selectors */}
 			<BlockControls>
 				<ToolbarGroup>
 					<ToolbarDropdownMenu
@@ -130,6 +140,46 @@ export default function Edit({ attributes, setAttributes, clientId }: EditProps)
 						}))}
 					/>
 				</ToolbarGroup>
+				{tier === 'free' && (
+					<ToolbarGroup>
+						<ToolbarDropdownMenu
+							icon="visibility"
+							label={__('FREE Badge Visibility', 'popup-maker')}
+							controls={[
+								{
+									title: __('Show FREE Badge', 'popup-maker'),
+									isActive: showFreeBadge,
+									onClick: () => setAttributes({ showFreeBadge: true }),
+								},
+								{
+									title: __('Hide FREE Badge', 'popup-maker'),
+									isActive: !showFreeBadge,
+									onClick: () => setAttributes({ showFreeBadge: false }),
+								},
+							]}
+						/>
+					</ToolbarGroup>
+				)}
+				{hasDescription && (
+					<ToolbarGroup>
+						<ToolbarDropdownMenu
+							icon="admin-settings"
+							label={__('Icon Style', 'popup-maker')}
+							controls={[
+								{
+									title: __('Chevron (▼/▲)', 'popup-maker'),
+									isActive: iconStyle === 'chevron',
+									onClick: () => setAttributes({ iconStyle: 'chevron' }),
+								},
+								{
+									title: __('Plus/Minus (+/−)', 'popup-maker'),
+									isActive: iconStyle === 'plus-minus',
+									onClick: () => setAttributes({ iconStyle: 'plus-minus' }),
+								},
+							]}
+						/>
+					</ToolbarGroup>
+				)}
 			</BlockControls>
 
 			{/* Block Content */}
@@ -153,10 +203,12 @@ export default function Edit({ attributes, setAttributes, clientId }: EditProps)
 							: undefined
 					}
 				>
-					{/* Tier Badge */}
-					<span className={`pm-tier-badge ${currentTier.className}`}>
-						{currentTier.label}
-					</span>
+					{/* Tier Badge - conditionally hidden for FREE tier */}
+					{(tier !== 'free' || showFreeBadge) && (
+						<span className={`pm-tier-badge ${currentTier.className}`}>
+							{currentTier.label}
+						</span>
+					)}
 
 					{/* Editable Label */}
 					<RichText
@@ -171,7 +223,7 @@ export default function Edit({ attributes, setAttributes, clientId }: EditProps)
 					{/* Accordion Icon (only if has description) */}
 					{hasDescription && (
 						<span className="pm-integration-feature__icon" aria-hidden="true">
-							{isOpen ? '▲' : '▼'}
+							{getIcon()}
 						</span>
 					)}
 				</div>

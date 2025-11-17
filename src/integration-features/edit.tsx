@@ -254,26 +254,24 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 						/>
 					</ToolbarGroup>
 				)}
-				{hasDescription && (
-					<ToolbarGroup>
-						<ToolbarDropdownMenu
-							icon="admin-settings"
-							label={__('Icon Style', 'popup-maker')}
-							controls={[
-								{
-									title: __('Chevron (▼/▲)', 'popup-maker'),
-									isActive: iconStyle === 'chevron',
-									onClick: () => setAttributes({ iconStyle: 'chevron' }),
-								},
-								{
-									title: __('Plus/Minus (+/−)', 'popup-maker'),
-									isActive: iconStyle === 'plus-minus',
-									onClick: () => setAttributes({ iconStyle: 'plus-minus' }),
-								},
-							]}
-						/>
-					</ToolbarGroup>
-				)}
+				<ToolbarGroup>
+					<ToolbarDropdownMenu
+						icon="admin-settings"
+						label={__('Icon Style', 'popup-maker')}
+						controls={[
+							{
+								title: __('Chevron (▼/▲)', 'popup-maker'),
+								isActive: iconStyle === 'chevron',
+								onClick: () => setAttributes({ iconStyle: 'chevron' }),
+							},
+							{
+								title: __('Plus/Minus (+/−)', 'popup-maker'),
+								isActive: iconStyle === 'plus-minus',
+								onClick: () => setAttributes({ iconStyle: 'plus-minus' }),
+							},
+						]}
+					/>
+				</ToolbarGroup>
 			</BlockControls>
 
 			{/* Block Content */}

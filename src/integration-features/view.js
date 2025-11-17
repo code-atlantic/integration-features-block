@@ -9,42 +9,14 @@ import { store, getContext, getElement } from '@wordpress/interactivity';
  * Handles accordion toggle behavior and icon updates on the frontend
  */
 store('popup-maker/integration-feature', {
-	actions: {
-		/**
-		 * Toggle accordion open/closed state
-		 * Syncs with the native details element's open state
-		 */
-		toggle: () => {
+	state: {
+		get isOpen() {
 			const context = getContext();
-			const { ref } = getElement();
-
-			// Get the details element
-			const details = ref.closest('details');
-
-			// Sync context with the native details element's open state
-			// Note: The native details element toggles AFTER this handler runs,
-			// so we need to read the CURRENT state and invert it
-			if (details) {
-				context.isOpen = !details.open;
-			} else {
-				// Fallback if not in a details element
-				context.isOpen = !context.isOpen;
-			}
+			return context.isOpen ?? false;
 		},
-	},
-	callbacks: {
-		/**
-		 * Get the appropriate icon based on style and open state
-		 * Reads from the native details element to ensure sync
-		 */
-		getIcon: () => {
+		get currentIcon() {
 			const context = getContext();
-			const { ref } = getElement();
-			const { iconStyle } = context;
-
-			// Get the actual open state from the details element
-			const details = ref.closest('details');
-			const isOpen = details ? details.open : context.isOpen;
+			const { iconStyle, isOpen } = context;
 
 			if (iconStyle === 'plus-minus') {
 				return isOpen ? '−' : '+';
@@ -52,4 +24,69 @@ store('popup-maker/integration-feature', {
 			return isOpen ? '▲' : '▼';
 		},
 	},
+	actions: {
+		/**
+		 * Toggle accordion open/closed state
+		 */
+		toggle: () => {
+			const context = getContext();
+			context.isOpen = !context.isOpen;
+		},
+	},
+	callbacks: {
+		/**
+		 * Get the appropriate icon based on style and open state
+		 */
+		getIcon: () => {
+			const context = getContext();
+			const { iconStyle, isOpen } = context;
+
+			if (iconStyle === 'plus-minus') {
+				return isOpen ? '−' : '+';
+			}
+			return isOpen ? '▲' : '▼';
+		},
+	},
+});
+
+/**
+ * Hide empty accordion details elements on page load
+ * This handles blocks that were saved with empty content
+ */
+document.addEventListener('DOMContentLoaded', () => {
+	const features = document.querySelectorAll('.pm-integration-feature.has-description details');
+
+	features.forEach((details) => {
+		const description = details.querySelector('.pm-integration-feature__description');
+		if (!description) return;
+
+		// Check if description is truly empty (only whitespace or empty tags)
+		const text = description.textContent?.trim() || '';
+		const hasImages = description.querySelector('img');
+		const hasIframes = description.querySelector('iframe');
+		const hasVideos = description.querySelector('video');
+
+		// If no meaningful content, hide the icon and prevent accordion behavior
+		if (!text && !hasImages && !hasIframes && !hasVideos) {
+			const icon = details.querySelector('.pm-integration-feature__icon');
+			if (icon) {
+				icon.style.display = 'none';
+			}
+
+			// Prevent opening
+			details.addEventListener('toggle', (e) => {
+				if (details.open) {
+					e.preventDefault();
+					details.open = false;
+				}
+			});
+
+			// Remove accordion styling
+			details.style.cursor = 'default';
+			const summary = details.querySelector('summary');
+			if (summary) {
+				summary.style.cursor = 'default';
+			}
+		}
+	});
 });

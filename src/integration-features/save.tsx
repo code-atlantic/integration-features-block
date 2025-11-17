@@ -43,16 +43,16 @@ export default function Save({ attributes }: SaveProps) {
 	});
 
 	/**
-	 * Compute hasDescription from actual InnerBlocks children
-	 * This ensures save output matches current content state
+	 * Use hasDescription attribute for deterministic rendering
 	 *
-	 * IMPORTANT: Keep this simple - just check if children exist
-	 * Don't try to detect "empty" content as that causes validation mismatches
-	 * with existing saved blocks
+	 * BACKWARD COMPATIBLE: Fallback to React.Children.count for existing blocks
+	 * that were saved before this attribute existed. This ensures gradual migration
+	 * without breaking existing content.
 	 */
-	const hasDescription =
+	const hasDescription = attributes.hasDescription ?? (
 		innerBlocksProps.children &&
-		React.Children.count(innerBlocksProps.children) > 0;
+		React.Children.count(innerBlocksProps.children) > 0
+	);
 
 	/**
 	 * Current tier config

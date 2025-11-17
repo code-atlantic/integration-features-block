@@ -50,43 +50,10 @@ store('popup-maker/integration-feature', {
 });
 
 /**
- * Hide empty accordion details elements on page load
- * This handles blocks that were saved with empty content
+ * NOTE: Empty accordion detection removed
+ *
+ * Empty blocks are now detected at save time via the hasDescription attribute,
+ * so they render as plain <div> instead of <details> - no runtime cleanup needed.
+ *
+ * Migration: Existing blocks will update to the new system when edited.
  */
-document.addEventListener('DOMContentLoaded', () => {
-	const features = document.querySelectorAll('.pm-integration-feature.has-description details');
-
-	features.forEach((details) => {
-		const description = details.querySelector('.pm-integration-feature__description');
-		if (!description) return;
-
-		// Check if description is truly empty (only whitespace or empty tags)
-		const text = description.textContent?.trim() || '';
-		const hasImages = description.querySelector('img');
-		const hasIframes = description.querySelector('iframe');
-		const hasVideos = description.querySelector('video');
-
-		// If no meaningful content, hide the icon and prevent accordion behavior
-		if (!text && !hasImages && !hasIframes && !hasVideos) {
-			const icon = details.querySelector('.pm-integration-feature__icon');
-			if (icon) {
-				icon.style.display = 'none';
-			}
-
-			// Prevent opening
-			details.addEventListener('toggle', (e) => {
-				if (details.open) {
-					e.preventDefault();
-					details.open = false;
-				}
-			});
-
-			// Remove accordion styling
-			details.style.cursor = 'default';
-			const summary = details.querySelector('summary');
-			if (summary) {
-				summary.style.cursor = 'default';
-			}
-		}
-	});
-});

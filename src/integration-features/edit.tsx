@@ -73,12 +73,27 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 
 	/**
 	 * DERIVED STATE: Compute hasDescription from inner blocks
-	 * No useEffect, no setAttributes, no feedback loops
+	 * Store as attribute for deterministic save output
 	 */
-	const hasDescription = useMemo(
+	const computedHasDescription = useMemo(
 		() => computeHasDescription(innerBlocks || []),
 		[innerBlocks]
 	);
+
+	/**
+	 * Update hasDescription attribute when content changes
+	 * This ensures save.tsx can render correct output without React.Children hacks
+	 */
+	useEffect(() => {
+		if (computedHasDescription !== attributes.hasDescription) {
+			setAttributes({ hasDescription: computedHasDescription });
+		}
+	}, [computedHasDescription, attributes.hasDescription, setAttributes]);
+
+	/**
+	 * Use computed value for editor display (most current)
+	 */
+	const hasDescription = computedHasDescription;
 
 	/**
 	 * Check if user is actively editing (typing, using block inserter, etc.)

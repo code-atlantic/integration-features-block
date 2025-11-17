@@ -42,6 +42,10 @@
 		"fontSize": {
 			"type": "string",
 			"default": "1.6rem"
+		},
+		"hasDescription": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {

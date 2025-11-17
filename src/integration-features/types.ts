@@ -22,6 +22,7 @@ export interface IntegrationFeatureAttributes {
 	iconStyle: IconStyleType;
 	showFreeBadge: boolean;
 	fontSize: string;
+	hasDescription: boolean;
 }
 
 /**

@@ -34,6 +34,9 @@ jest.mock('@wordpress/block-editor', () => ({
 	BlockControls: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="block-controls">{children}</div>
 	),
+	InspectorControls: ({ children }: { children: React.ReactNode }) => (
+		<div data-testid="inspector-controls">{children}</div>
+	),
 	RichText: Object.assign(
 		({
 			value,
@@ -87,6 +90,23 @@ jest.mock('@wordpress/components', () => ({
 				</button>
 			))}
 		</div>
+	),
+	PanelBody: ({ children, title }: { children: React.ReactNode; title: string }) => (
+		<div data-testid={`panel-${title}`}>{children}</div>
+	),
+	FontSizePicker: ({
+		value,
+		onChange,
+	}: {
+		value: string;
+		onChange: (value: string) => void;
+	}) => (
+		<input
+			type="text"
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+			data-testid="font-size-picker"
+		/>
 	),
 }));
 

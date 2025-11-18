@@ -4,16 +4,18 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Save from '../save';
 import type { IntegrationFeaturesGroupAttributes } from '../types';
 
 // Mock WordPress dependencies
 jest.mock('@wordpress/block-editor', () => ({
 	useBlockProps: {
-		save: jest.fn(() => ({})),
+		save: jest.fn((props = {}) => props),
 	},
 	useInnerBlocksProps: {
-		save: jest.fn(() => ({
+		save: jest.fn((props = {}) => ({
+			...props,
 			className: 'pm-integration-features-group__content',
 			children: [],
 		})),

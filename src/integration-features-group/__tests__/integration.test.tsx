@@ -148,8 +148,8 @@ describe('Block Integration Tests', () => {
 	});
 
 	describe('Block Category', () => {
-		it('is in widgets category', () => {
-			expect(metadata.category).toBe('widgets');
+		it('is in layout category', () => {
+			expect(metadata.category).toBe('layout');
 		});
 	});
 });

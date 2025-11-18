@@ -4,7 +4,7 @@
 	"name": "popup-maker/integration-feature",
 	"version": "1.0.0",
 	"title": "Integration Feature",
-	"category": "widgets",
+	"category": "text",
 	"icon": "admin-plugins",
 	"description": "Display integration features with tier badges and optional accordion descriptions.",
 	"keywords": [

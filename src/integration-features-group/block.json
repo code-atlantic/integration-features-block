@@ -4,7 +4,7 @@
   "name": "popup-maker/integration-features-group",
   "version": "1.0.0",
   "title": "Integration Features Group",
-  "category": "widgets",
+  "category": "layout",
   "icon": "admin-plugins",
   "description": "Display a group of integration features with icon, heading, and accordion list.",
   "keywords": [

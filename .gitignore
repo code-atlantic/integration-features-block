@@ -8,6 +8,9 @@ vendor/
 build/
 *.asset.php
 
+# Test output
+coverage/
+
 # npm
 package-lock.json
 npm-debug.log*

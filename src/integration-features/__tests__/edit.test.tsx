@@ -226,27 +226,28 @@ describe('Edit Component', () => {
 
 	describe('accordion toggle', () => {
 		it('displays closed state by default', () => {
-			render(
+			const { container } = render(
 				<Edit
 					attributes={defaultAttributes}
 					setAttributes={mockSetAttributes}
 					clientId={mockClientId}
 				/>
 			);
-			// Chevron down icon for closed state
-			expect(screen.getByText('▼')).toBeInTheDocument();
+			// Chevron down icon (dashicons-arrow-down-alt2) for closed state
+			expect(container.querySelector('.dashicons-arrow-down-alt2')).toBeInTheDocument();
+			expect(container.querySelector('.is-open')).not.toBeInTheDocument();
 		});
 
 		it('displays open state when isOpen is true', () => {
-			render(
+			const { container } = render(
 				<Edit
 					attributes={{ ...defaultAttributes, isOpen: true }}
 					setAttributes={mockSetAttributes}
 					clientId={mockClientId}
 				/>
 			);
-			// Chevron up icon for open state
-			expect(screen.getByText('▲')).toBeInTheDocument();
+			// Chevron icon has is-open class (CSS rotation handles visual change)
+			expect(container.querySelector('.dashicons-arrow-down-alt2.is-open')).toBeInTheDocument();
 		});
 
 		it('toggles accordion when summary is clicked', async () => {
@@ -269,29 +270,29 @@ describe('Edit Component', () => {
 
 	describe('icon style switching', () => {
 		it('displays chevron icon by default', () => {
-			render(
+			const { container } = render(
 				<Edit
 					attributes={defaultAttributes}
 					setAttributes={mockSetAttributes}
 					clientId={mockClientId}
 				/>
 			);
-			expect(screen.getByText('▼')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-arrow-down-alt2')).toBeInTheDocument();
 		});
 
 		it('displays plus-minus icon when iconStyle is plus-minus', () => {
-			render(
+			const { container } = render(
 				<Edit
 					attributes={{ ...defaultAttributes, iconStyle: 'plus-minus' }}
 					setAttributes={mockSetAttributes}
 					clientId={mockClientId}
 				/>
 			);
-			expect(screen.getByText('+')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-plus')).toBeInTheDocument();
 		});
 
-		it('shows minus icon when open with plus-minus style', () => {
-			render(
+		it('shows plus icon with is-open class when open with plus-minus style', () => {
+			const { container } = render(
 				<Edit
 					attributes={{
 						...defaultAttributes,
@@ -302,7 +303,9 @@ describe('Edit Component', () => {
 					clientId={mockClientId}
 				/>
 			);
-			expect(screen.getByText('−')).toBeInTheDocument();
+			// Icon is always dashicons-plus, CSS rotation handles the visual change
+			const icon = container.querySelector('.dashicons-plus.is-open');
+			expect(icon).toBeInTheDocument();
 		});
 
 		it('toolbar button switches to plus-minus icon', async () => {

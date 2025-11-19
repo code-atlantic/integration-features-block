@@ -107,8 +107,12 @@ store('popup-maker/integration-features-group', {
 			context.groupId =
 				ref.id || `group-${Math.random().toString(36).substr(2, 9)}`;
 
-			// Initialize group collapsed state (from context, defaults to true)
-			if (context.groupCollapsed === undefined) {
+			// Initialize group collapsed state
+			// If not collapsible, force to not collapsed (false)
+			// If collapsible and undefined, default to saved groupCollapsed value
+			if (!context.groupCollapsible) {
+				context.groupCollapsed = false;
+			} else if (context.groupCollapsed === undefined) {
 				context.groupCollapsed = true;
 			}
 

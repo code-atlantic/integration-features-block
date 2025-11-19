@@ -25,6 +25,12 @@ jest.mock('@wordpress/block-editor', () => ({
 	})),
 	BlockControls: ({ children }) => <div>{children}</div>,
 	InspectorControls: ({ children }) => <div>{children}</div>,
+	PanelColorSettings: ({ title, colorSettings, children }: any) => (
+		<div>
+			<h3>{title}</h3>
+			{children}
+		</div>
+	),
 	RichText: ({ value, onChange, placeholder, className }: any) => (
 		<input
 			className={className}
@@ -41,6 +47,7 @@ jest.mock('@wordpress/components', () => ({
 			{children}
 		</button>
 	),
+	ButtonGroup: ({ children }) => <div>{children}</div>,
 	ToolbarGroup: ({ children }) => <div>{children}</div>,
 	ToolbarDropdownMenu: ({ label, controls }) => (
 		<div>
@@ -93,7 +100,10 @@ jest.mock('@wordpress/components', () => ({
 }));
 
 jest.mock('@wordpress/data', () => ({
-	useSelect: jest.fn(() => undefined),
+	useSelect: jest.fn(() => ({
+		innerBlocks: [],
+		hasSelectedInnerBlock: false,
+	})),
 }));
 
 jest.mock('@wordpress/element', () => ({
@@ -170,20 +180,21 @@ describe('Edit Component', () => {
 		);
 
 		// Check if inspector controls are present
-		expect(screen.getByText('Accordion Settings')).toBeInTheDocument();
+		expect(screen.getByText('Heading Settings')).toBeInTheDocument();
+		expect(screen.getByText('Group Settings')).toBeInTheDocument();
 	});
 
-	it('renders icon animation select control in sidebar', () => {
+	it('renders icon animation select control in sidebar when collapsible', () => {
 		render(
 			<Edit
-				attributes={defaultAttributes}
+				attributes={{ ...defaultAttributes, groupCollapsible: true }}
 				setAttributes={mockSetAttributes}
 				clientId="test-id"
 				isSelected={true}
 			/>
 		);
 
-		expect(screen.getByLabelText('Toggle Icon Style')).toBeInTheDocument();
+		expect(screen.getByText('Toggle Icon Style')).toBeInTheDocument();
 		expect(screen.getByText('Plus (+)')).toBeInTheDocument();
 		expect(screen.getByText('Arrow')).toBeInTheDocument();
 	});

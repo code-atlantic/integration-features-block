@@ -139,32 +139,33 @@ describe('Save Component', () => {
 
 	describe('icon style rendering', () => {
 		it('renders chevron icon by default', () => {
-			render(save({ attributes: defaultAttributes }));
-			expect(screen.getByText('▼')).toBeInTheDocument();
+			const { container } = render(save({ attributes: defaultAttributes }));
+			expect(container.querySelector('.dashicons-arrow-down-alt2')).toBeInTheDocument();
 		});
 
 		it('renders plus icon for plus-minus style', () => {
-			render(
+			const { container } = render(
 				save({
 					attributes: { ...defaultAttributes, iconStyle: 'plus-minus' },
 				})
 			);
-			expect(screen.getByText('+')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-plus')).toBeInTheDocument();
 		});
 
-		it('chevron icon is always closed (▼) in saved content', () => {
-			// isOpen only affects editor, not frontend
-			render(
+		it('chevron icon is always dashicons-arrow-down-alt2 in saved content', () => {
+			// isOpen only affects editor, not frontend - CSS handles rotation
+			const { container } = render(
 				save({
 					attributes: { ...defaultAttributes, isOpen: true },
 				})
 			);
-			expect(screen.getByText('▼')).toBeInTheDocument();
-			expect(screen.queryByText('▲')).not.toBeInTheDocument();
+			expect(container.querySelector('.dashicons-arrow-down-alt2')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-arrow-up-alt2')).not.toBeInTheDocument();
 		});
 
-		it('plus-minus icon is always plus (+) in saved content', () => {
-			render(
+		it('plus-minus icon is always dashicons-plus in saved content', () => {
+			// isOpen only affects editor, not frontend - CSS handles rotation
+			const { container } = render(
 				save({
 					attributes: {
 						...defaultAttributes,
@@ -173,8 +174,8 @@ describe('Save Component', () => {
 					},
 				})
 			);
-			expect(screen.getByText('+')).toBeInTheDocument();
-			expect(screen.queryByText('−')).not.toBeInTheDocument();
+			expect(container.querySelector('.dashicons-plus')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-minus')).not.toBeInTheDocument();
 		});
 	});
 
@@ -344,7 +345,7 @@ describe('Save Component', () => {
 
 			expect(screen.getByText('PRO+')).toBeInTheDocument();
 			expect(screen.getByText('Full Feature')).toBeInTheDocument();
-			expect(screen.getByText('+')).toBeInTheDocument();
+			expect(container.querySelector('.dashicons-plus')).toBeInTheDocument();
 			expect(container.querySelector('details')).toBeInTheDocument();
 		});
 	});

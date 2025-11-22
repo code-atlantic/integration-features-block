@@ -66,6 +66,14 @@
       "type": "boolean",
       "default": false
     },
+    "showFeatureCount": {
+      "type": "boolean",
+      "default": false
+    },
+    "featureCount": {
+      "type": "number",
+      "default": 0
+    },
     "headerBackgroundColor": {
       "type": "string",
       "default": ""

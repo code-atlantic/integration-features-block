@@ -28,6 +28,8 @@ export interface IntegrationFeaturesGroupAttributes {
   groupCollapsible: boolean;
   groupCollapsed: boolean;
   hasFeatures: boolean;
+  showFeatureCount: boolean;
+  featureCount: number;
   headerBackgroundColor: string;
   headingColor: string;
   subheadingColor: string;

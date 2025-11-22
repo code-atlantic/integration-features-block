@@ -3,6 +3,14 @@
  */
 
 .wp-block-popup-maker-integration-features-group {
+	--group-spacing: 2rem;
+	--icon-size: 1em;
+	--heading-color: #1e1e1e;
+	--subheading-color: #4a5568;
+	--default-background: #fafafa;
+	--hover-background: #eee;
+	--border-radius: 8px;
+
 
 	// Selected state
 	&.is-selected {
@@ -24,10 +32,10 @@
 .pm-integration-features-group__header {
 	display: flex;
 	gap: 1.5rem;
-	align-items: flex-start;
+	align-items: center;
 	padding: 2rem;
-	border-radius: 8px;
-	background: #fafafa;
+	border-radius: var(--border-radius);
+	background: var(--default-background);
 	position: relative;
 
 	// Icon section

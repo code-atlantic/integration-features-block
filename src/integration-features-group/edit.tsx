@@ -41,7 +41,7 @@ export default function Edit({
 	clientId,
 	isSelected,
 }: EditProps) {
-	const { groupIcon, groupIconColor, groupIconBackgroundColor, heading, headingTag, subheading, iconAnimation, oneOpenPerGroup, defaultOpen, groupCollapsible, groupCollapsed, headerBackgroundColor, headingColor, subheadingColor } = attributes;
+	const { groupIcon, groupIconColor, groupIconBackgroundColor, heading, headingTag, subheading, iconAnimation, oneOpenPerGroup, defaultOpen, groupCollapsible, groupCollapsed, showFeatureCount, headerBackgroundColor, headingColor, subheadingColor } = attributes;
 
 	// Track if we're editing the heading/subheading RichText
 	const [isEditingText, setIsEditingText] = useState(false);
@@ -92,14 +92,32 @@ export default function Edit({
 	);
 
 	/**
-	 * Update hasFeatures attribute when content changes
+	 * Compute feature count from inner blocks
+	 */
+	const featureCount = useMemo(
+		() => (innerBlocks || []).filter(block => block.name === 'popup-maker/integration-feature').length,
+		[innerBlocks]
+	);
+
+	/**
+	 * Update hasFeatures and featureCount attributes when content changes
 	 * This ensures save.tsx can render correct output
 	 */
 	useEffect(() => {
+		const updates: Partial<typeof attributes> = {};
+
 		if (computedHasFeatures !== attributes.hasFeatures) {
-			setAttributes({ hasFeatures: computedHasFeatures });
+			updates.hasFeatures = computedHasFeatures;
 		}
-	}, [computedHasFeatures, attributes.hasFeatures, setAttributes]);
+
+		if (featureCount !== attributes.featureCount) {
+			updates.featureCount = featureCount;
+		}
+
+		if (Object.keys(updates).length > 0) {
+			setAttributes(updates);
+		}
+	}, [computedHasFeatures, featureCount, attributes.hasFeatures, attributes.featureCount, setAttributes]);
 
 	/**
 	 * Auto-collapse when block is deselected (unless editing text or inner blocks)
@@ -186,6 +204,17 @@ export default function Edit({
 						]}
 						onChange={(value) =>
 							setAttributes({ headingTag: value as 'h2' | 'h3' })
+						}
+					/>
+					<ToggleControl
+						label={__('Show Feature Count', 'popup-maker')}
+						help={__(
+							'Display the number of features after the heading (e.g., "Features (8)")',
+							'popup-maker'
+						)}
+						checked={showFeatureCount}
+						onChange={(value) =>
+							setAttributes({ showFeatureCount: value })
 						}
 					/>
 				</PanelBody>
@@ -361,25 +390,35 @@ export default function Edit({
 					{/* Text section */}
 					<div className="pm-integration-features-group__text">
 						{/* Heading */}
-						<RichText
-							tagName={headingTag as any}
-							value={heading}
-							onChange={(value) => setAttributes({ heading: value })}
-							onFocus={() => setIsEditingText(true)}
-							onBlur={() => setIsEditingText(false)}
-							placeholder={__('Integration name...', 'popup-maker')}
-							className="pm-integration-features-group__heading"
-							style={{
-								color: headingColor || undefined
-							}}
-							allowedFormats={[
-								'core/bold',
-								'core/italic',
-								'core/link',
-								'core/strikethrough',
-								'core/code',
-							]}
-						/>
+						<div className="pm-integration-features-group__heading-wrapper">
+							<RichText
+								tagName={headingTag as any}
+								value={heading}
+								onChange={(value) => setAttributes({ heading: value })}
+								onFocus={() => setIsEditingText(true)}
+								onBlur={() => setIsEditingText(false)}
+								placeholder={__('Integration name...', 'popup-maker')}
+								className="pm-integration-features-group__heading"
+								style={{
+									color: headingColor || undefined
+								}}
+								allowedFormats={[
+									'core/bold',
+									'core/italic',
+									'core/link',
+									'core/strikethrough',
+									'core/code',
+								]}
+							/>
+							{showFeatureCount && featureCount > 0 && (
+								<span
+									className="pm-integration-features-group__count"
+									style={{ color: headingColor || undefined }}
+								>
+									({featureCount})
+								</span>
+							)}
+						</div>
 
 						{/* Subheading */}
 						<RichText

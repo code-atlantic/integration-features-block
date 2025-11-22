@@ -26,6 +26,8 @@ export default function Save({ attributes }: SaveProps) {
 		groupCollapsible,
 		groupCollapsed,
 		hasFeatures,
+		showFeatureCount,
+		featureCount,
 		headerBackgroundColor,
 		headingColor,
 		subheadingColor,
@@ -127,14 +129,24 @@ export default function Save({ attributes }: SaveProps) {
 				{/* Text content */}
 				<div className="pm-integration-features-group__text">
 					{heading && (
-						<RichText.Content
-							tagName={headingTag as any}
-							className="pm-integration-features-group__heading"
-							value={heading}
-							style={{
-								color: headingColor || undefined
-							}}
-						/>
+						<div className="pm-integration-features-group__heading-wrapper">
+							<RichText.Content
+								tagName={headingTag as any}
+								className="pm-integration-features-group__heading"
+								value={heading}
+								style={{
+									color: headingColor || undefined
+								}}
+							/>
+							{showFeatureCount && featureCount > 0 && (
+								<span
+									className="pm-integration-features-group__count"
+									style={{ color: headingColor || undefined }}
+								>
+									({featureCount})
+								</span>
+							)}
+						</div>
 					)}
 					{subheading && (
 						<RichText.Content

@@ -8,39 +8,44 @@ import type { SectionHeadingAttributes } from './types';
 
 /**
  * Inline SVG components used in v1 (before dashicons migration)
+ * These must match EXACTLY what was saved in the post content
  */
 const ArrowRightIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		className="pm-section-heading__icon"
+		viewBox="0 0 20 20"
+		fill="currentColor"
+		width="1em"
+		height="1em"
 		aria-hidden="true"
 	>
-		<line x1="5" y1="12" x2="19" y2="12" />
-		<polyline points="12 5 19 12 12 19" />
+		<path
+			fillRule="evenodd"
+			d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+			clipRule="evenodd"
+		/>
 	</svg>
 );
 
 const ExternalIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		className="pm-section-heading__icon"
+		viewBox="0 0 20 20"
+		fill="currentColor"
+		width="1em"
+		height="1em"
 		aria-hidden="true"
 	>
-		<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-		<polyline points="15 3 21 3 21 9" />
-		<line x1="10" y1="14" x2="21" y2="3" />
+		<path
+			fillRule="evenodd"
+			d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
+			clipRule="evenodd"
+		/>
+		<path
+			fillRule="evenodd"
+			d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
+			clipRule="evenodd"
+		/>
 	</svg>
 );
 

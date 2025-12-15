@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2024-12-15
+
+### Changed
+- Section heading link icons now use WordPress dashicons instead of inline SVGs
+  - `dashicons-arrow-right-alt` for internal links
+  - `dashicons-external` for external links
+- Updated link font-size to 1.75rem default
+
 ## [0.2.1] - 2024-12-15
 
 ### Added

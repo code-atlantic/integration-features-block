@@ -34,7 +34,7 @@
 		gap: 0.25rem;
 		color: var(--link-color);
 		text-decoration: none;
-		font-size: 0.875rem;
+		font-size: 1.75rem;
 		font-weight: 500;
 		white-space: nowrap;
 		flex-shrink: 0;
@@ -49,10 +49,12 @@
 			outline-offset: 2px;
 		}
 
-		// Icon styling (both arrow-right and external)
-		svg {
+		// Dashicon styling
+		.dashicons {
+			font-size: inherit;
 			width: 1em;
 			height: 1em;
+			line-height: 1;
 			flex-shrink: 0;
 		}
 	}

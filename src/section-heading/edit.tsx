@@ -174,7 +174,7 @@ export default function Edit({ attributes, setAttributes }: EditProps) {
 						value={heading}
 						onChange={(value) => setAttributes({ heading: value })}
 						placeholder={__('Section heading...', 'popup-maker')}
-						className="pm-section-heading__title pm-toc-heading"
+						className={`pm-section-heading__title${hasLink ? ' pm-toc-heading' : ''}`}
 						style={{ color: headingColor || undefined }}
 						allowedFormats={['core/bold', 'core/italic']}
 					/>

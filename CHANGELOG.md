@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.4] - 2024-12-15
+
+### Changed
+- `pm-toc-heading` class on section-heading now only applied when View All link is present
+- Removed `pm-toc-heading` class from integration-features-group (not applicable without links)
+
+### Fixed
+- Updated deprecation handlers to properly migrate all block format variations
+- Fixed incorrect SVG markup in v1 deprecation to match actual saved content
+
 ## [0.2.3] - 2024-12-15
 
 ### Added

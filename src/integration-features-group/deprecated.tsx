@@ -263,7 +263,7 @@ const v1 = {
 };
 
 /**
- * V2: Version with heading wrapper but without pm-toc-heading class
+ * V2: Version with pm-toc-heading class (0.2.1-0.2.2 period, now removed)
  */
 const v2 = {
 	attributes: {
@@ -476,10 +476,10 @@ const v2 = {
 					<div className="pm-integration-features-group__text">
 						{heading && (
 							<div className="pm-integration-features-group__heading-wrapper">
-								{/* V2: Missing pm-toc-heading class */}
+								{/* V2: HAS pm-toc-heading class (being migrated away) */}
 								<RichText.Content
 									tagName={headingTag as any}
-									className="pm-integration-features-group__heading"
+									className="pm-integration-features-group__heading pm-toc-heading"
 									value={heading}
 									style={{
 										color: headingColor || undefined
@@ -523,7 +523,7 @@ const v2 = {
 	},
 
 	migrate(attributes: IntegrationFeaturesGroupAttributes) {
-		// No attribute changes, just markup update
+		// No attribute changes, just markup update (removing pm-toc-heading class)
 		return attributes;
 	},
 };

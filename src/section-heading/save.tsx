@@ -35,7 +35,7 @@ export default function Save({ attributes }: SaveProps) {
 				{heading && (
 					<RichText.Content
 						tagName={headingTag as any}
-						className="pm-section-heading__title pm-toc-heading"
+						className={`pm-section-heading__title${hasLink ? ' pm-toc-heading' : ''}`}
 						value={heading}
 						style={{ color: headingColor || undefined }}
 					/>

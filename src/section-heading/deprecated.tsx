@@ -186,5 +186,143 @@ const v1 = {
 	},
 };
 
+/**
+ * V2: Version with dashicons but pm-toc-heading always applied (unconditionally)
+ *
+ * Changes from v2 to current:
+ * - pm-toc-heading class now only applied when hasLink is true
+ */
+const v2 = {
+	attributes: {
+		heading: {
+			type: 'string' as const,
+			default: '',
+		},
+		headingTag: {
+			type: 'string' as const,
+			enum: ['h2', 'h3'] as const,
+			default: 'h2',
+		},
+		subtitle: {
+			type: 'string' as const,
+			default: '',
+		},
+		viewAllLink: {
+			type: 'object' as const,
+			default: {
+				url: '',
+				opensInNewTab: false,
+			},
+		},
+		isExternalLink: {
+			type: 'boolean' as const,
+			default: false,
+		},
+		headingColor: {
+			type: 'string' as const,
+			default: '',
+		},
+		subtitleColor: {
+			type: 'string' as const,
+			default: '',
+		},
+		linkColor: {
+			type: 'string' as const,
+			default: '',
+		},
+	},
+
+	supports: {
+		html: false,
+		anchor: true,
+		align: ['wide', 'full'],
+		className: true,
+		customClassName: true,
+		spacing: {
+			margin: true,
+			padding: true,
+		},
+		color: {
+			background: true,
+			text: false,
+			link: false,
+		},
+		__experimentalBorder: {
+			color: true,
+			radius: true,
+			style: true,
+			width: true,
+		},
+		typography: {
+			fontSize: true,
+			lineHeight: true,
+		},
+	},
+
+	save({ attributes }: { attributes: SectionHeadingAttributes }) {
+		const {
+			heading,
+			headingTag,
+			subtitle,
+			viewAllLink,
+			isExternalLink,
+			headingColor,
+			subtitleColor,
+			linkColor,
+		} = attributes;
+
+		const blockProps = useBlockProps.save({
+			className: 'pm-section-heading',
+		});
+
+		const hasLink = viewAllLink?.url && viewAllLink.url.trim().length > 0;
+		const opensInNewTab = viewAllLink?.opensInNewTab;
+
+		return (
+			<div {...blockProps}>
+				<div className="pm-section-heading__header">
+					{heading && (
+						<RichText.Content
+							tagName={headingTag as any}
+							// v2: pm-toc-heading always applied (unconditionally)
+							className="pm-section-heading__title pm-toc-heading"
+							value={heading}
+							style={{ color: headingColor || undefined }}
+						/>
+					)}
+					{hasLink && (
+						<a
+							href={viewAllLink.url}
+							className="pm-section-heading__link"
+							target={opensInNewTab ? '_blank' : undefined}
+							rel={opensInNewTab ? 'noopener noreferrer' : undefined}
+							style={{ color: linkColor || undefined }}
+						>
+							View all
+							<i
+								className={`dashicons ${isExternalLink ? 'dashicons-external' : 'dashicons-arrow-right-alt'}`}
+								aria-hidden="true"
+							/>
+						</a>
+					)}
+				</div>
+				{subtitle && (
+					<RichText.Content
+						tagName="p"
+						className="pm-section-heading__subtitle"
+						value={subtitle}
+						style={{ color: subtitleColor || undefined }}
+					/>
+				)}
+			</div>
+		);
+	},
+
+	migrate(attributes: SectionHeadingAttributes) {
+		// No attribute changes needed, just markup update
+		return attributes;
+	},
+};
+
 // Export in reverse chronological order (newest first)
-export default [v1];
+export default [v2, v1];

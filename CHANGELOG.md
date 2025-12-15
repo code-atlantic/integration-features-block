@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2024-12-15
+
+### Added
+- Block deprecation handlers for seamless migration of existing content
+  - `popup-maker/section-heading`: Migrates from inline SVG icons to dashicons, adds pm-toc-heading class
+  - `popup-maker/integration-features-group`: Adds pm-toc-heading class to existing headings
+
+### Fixed
+- Block validation errors when editing pages with older block markup
+
 ## [0.2.2] - 2024-12-15
 
 ### Changed

@@ -1,42 +1,70 @@
-# Integration Feature Block
+# Integration Features
 
-A modern WordPress Gutenberg block for displaying integration features with tier badges and optional accordion descriptions.
+[![CI](https://github.com/code-atlantic/integration-features-block/actions/workflows/ci.yml/badge.svg)](https://github.com/code-atlantic/integration-features-block/actions/workflows/ci.yml)
+[![Release](https://github.com/code-atlantic/integration-features-block/actions/workflows/release.yml/badge.svg)](https://github.com/code-atlantic/integration-features-block/releases)
 
-## Features
+A collection of WordPress Gutenberg blocks for displaying integration features with tier badges, accordion descriptions, and organized grouping.
+
+## Blocks Included
+
+### Integration Feature (`popup-maker/integration-feature`)
+Individual feature items with tier badges and optional expandable descriptions.
 
 - **Tier Badges**: Visual indicators for FREE, PRO, and PRO+ tiers
 - **Accordion Support**: Optional expandable descriptions using native `<details>` element
-- **TypeScript**: Full type safety with strict TypeScript compilation
-- **Accessibility**: WCAG-compliant with keyboard navigation and screen reader support
-- **BEM CSS**: Organized, maintainable styling with BEM methodology
-- **Modern React**: Uses hooks and derived state patterns (no anti-patterns)
+- **Icon Styles**: Plus/minus or chevron toggle indicators
+
+### Integration Features Group (`popup-maker/integration-features-group`)
+Container block for organizing multiple features with shared behavior.
+
+- **Group Icon**: Dashicon picker with color customization
+- **Collapsible Groups**: Optional expand/collapse for entire feature sets
+- **One-Open Accordion**: Coordinate child features so only one is open at a time
+- **Feature Count**: Display number of features in the group
+- **SEO Friendly**: Content visible to search engines (progressive enhancement)
+
+### Section Heading (`popup-maker/section-heading`)
+Page section headers with optional "View All" links.
+
+- **Heading Levels**: H2 or H3 support
+- **Optional Subtitle**: Additional descriptive text
+- **View All Link**: Internal or external links with smart icon detection
+- **Color Controls**: Customizable heading, subtitle, and link colors
 
 ## Installation
 
-### From npm (recommended)
+### Via GitHub Updater (Recommended)
 
-```bash
-npm install @code-atlantic/integration-feature-block
-```
+1. Install [Git Updater](https://github.com/afragen/git-updater) plugin
+2. Go to Settings → Git Updater → Install Plugin
+3. Enter: `code-atlantic/integration-features-block`
+4. Install and activate
 
 ### Manual Installation
 
-1. Download the latest release
+1. Download the latest release from [Releases](https://github.com/code-atlantic/integration-features-block/releases)
 2. Upload to `/wp-content/plugins/integration-features/`
 3. Activate the plugin in WordPress
-4. The block will be available in the block editor
+
+## Requirements
+
+- WordPress 6.7+
+- PHP 7.4+
 
 ## Development
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- WordPress 6.0+
-- PHP 7.4+
+- Node.js 20+
+- npm
 
 ### Setup
 
 ```bash
+# Clone the repository
+git clone git@github.com:code-atlantic/integration-features-block.git
+cd integration-features-block
+
 # Install dependencies
 npm install
 
@@ -46,13 +74,14 @@ npm start
 # Create production build
 npm run build
 
-# Run TypeScript type checking
+# Run tests
+npm test
+
+# Type checking
 npm run type-check
 
-# Lint JavaScript/TypeScript
+# Linting
 npm run lint:js
-
-# Lint CSS/SCSS
 npm run lint:css
 ```
 
@@ -60,103 +89,109 @@ npm run lint:css
 
 ```
 integration-features/
-├── src/integration-features/
-│   ├── block.json           # Block metadata and configuration
-│   ├── index.ts             # Block registration
-│   ├── types.ts             # TypeScript type definitions
-│   ├── edit.tsx             # Editor component
-│   ├── save.tsx             # Save component (frontend output)
-│   ├── lib/
-│   │   └── hasDescription.ts # Shared utility function
-│   ├── editor.scss          # Editor-only styles
-│   └── style.scss           # Frontend and editor styles
-├── build/                   # Compiled output (generated)
-├── integration-features.php # WordPress plugin file
-├── package.json             # npm dependencies and scripts
-├── tsconfig.json            # TypeScript configuration
-└── README.md                # This file
+├── .github/
+│   ├── workflows/
+│   │   ├── ci.yml              # CI: test, lint, build
+│   │   └── release.yml         # Release: build zip, create release
+│   └── dependabot.yml          # Automated dependency updates
+├── src/
+│   ├── integration-features/        # Individual feature block
+│   ├── integration-features-group/  # Group container block
+│   └── section-heading/             # Section heading block
+├── build/                      # Compiled output (generated)
+├── integration-features.php    # Plugin main file
+├── package.json
+├── tsconfig.json
+├── CHANGELOG.md
+└── README.md
 ```
 
-## Usage
+## Git Workflow
 
-### Basic Example
+This project uses **Git Flow** with automated CI/CD.
 
-Add the Integration Feature block in the WordPress editor:
+### Branches
 
-1. Click the (+) icon to add a new block
-2. Search for "Integration Feature"
-3. Select a tier badge (FREE, PRO, PRO+)
-4. Enter a feature label
-5. Optionally add description content
+- `main` - Production releases (protected, requires CI pass)
+- `develop` - Development integration branch
 
-### Accordion Behavior
+### Making Changes
 
-The block automatically becomes an accordion when you add description content (paragraphs, lists, headings). The native `<details>` element provides:
+```bash
+# Start from develop
+git checkout develop
+git pull origin develop
 
-- Collapsible/expandable behavior
-- No JavaScript required
-- Better performance
-- Built-in accessibility
+# Create feature branch
+git checkout -b feature/my-feature
+
+# Make changes, commit, push
+git add .
+git commit -m "feat: Add my feature"
+git push origin feature/my-feature
+
+# Create PR to develop
+```
+
+### Creating a Release
+
+```bash
+# Merge develop to main
+git checkout main
+git pull origin main
+git merge develop
+
+# Create and push tag
+git tag v0.4.0
+git push origin main --tags
+
+# GitHub Actions will:
+# 1. Run tests
+# 2. Build the plugin
+# 3. Create a GitHub Release with zip attached
+```
 
 ## Technical Details
 
-### Derived State Pattern
+### Progressive Enhancement
 
-The block uses a derived state pattern to compute `hasDescription` from inner blocks:
+All blocks use progressive enhancement for SEO and accessibility:
 
-```typescript
-const hasDescription = useMemo(
-  () => computeHasDescription(innerBlocks || []),
-  [innerBlocks]
-);
-```
+- Content renders visible by default (no JavaScript required)
+- JavaScript enhances with interactive features (accordions, etc.)
+- Search engines index all content regardless of collapsed state
 
-This eliminates `useEffect` feedback loops and ensures consistent behavior.
+### WordPress Interactivity API
 
-### Type Safety
+Uses the modern WordPress Interactivity API for frontend interactions:
 
-All components are fully typed with TypeScript strict mode:
+- Declarative state management
+- Server-side rendered initial state
+- Hydration on client
 
-- `IntegrationFeatureAttributes` - Block attribute interface
-- `EditProps` - Edit component props
-- `SaveProps` - Save component props
-- `WPBlock` - WordPress block structure
-- `TierType` - Tier badge type union
+### Accessibility
 
-### Accessibility Features
-
-- Keyboard navigation support (Enter/Space to toggle)
+- WCAG 2.1 AA compliant
+- Keyboard navigation (Enter/Space to toggle)
 - ARIA attributes for screen readers
-- Focus indicators for keyboard users
+- Focus indicators
+- Reduced motion support
 - High contrast mode support
-- Reduced motion preference support
-- Print-friendly output
-
-## Browser Support
-
-- Modern evergreen browsers (Chrome, Firefox, Safari, Edge)
-- WordPress 6.0+ editor support
-- Native `<details>` element support
 
 ## Contributing
 
-Contributions are welcome! Please:
-
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch from `develop`
+3. Make your changes with tests
+4. Submit a PR to `develop`
+
+All PRs must pass CI (tests, type-check, build) before merging.
 
 ## License
 
-GPL-2.0-or-later - see LICENSE file for details
+GPL-2.0-or-later
 
 ## Author
 
-**Code Atlantic**  
+**Code Atlantic**
 https://code-atlantic.com
-
-## Support
-
-For bugs and feature requests, please use the [GitHub issue tracker](https://github.com/code-atlantic/integration-feature-block/issues).

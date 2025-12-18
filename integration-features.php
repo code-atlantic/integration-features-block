@@ -3,7 +3,7 @@
  * Plugin Name:       Integration Features
  * Plugin URI:        https://github.com/code-atlantic/integration-features
  * Description:       Gutenberg blocks for displaying integration features with tier badges, accordion descriptions, and group organization.
- * Version:           0.3.1
+ * Version:           0.3.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Code Atlantic
@@ -12,7 +12,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       integration-features
  *
- * GitHub Plugin URI: code-atlantic/integration-features-block
+ * GitHub Plugin URI: https://github.com/code-atlantic/integration-features-block
  * GitHub Branch:     main
  * Primary Branch:    main
  * Release Asset:     true

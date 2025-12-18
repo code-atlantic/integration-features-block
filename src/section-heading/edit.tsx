@@ -70,7 +70,7 @@ export default function Edit({ attributes, setAttributes }: EditProps) {
 						icon={linkIcon}
 						label={__('View All Link', 'popup-maker')}
 						onClick={() => setIsLinkPickerOpen(!isLinkPickerOpen)}
-						isPressed={hasLink}
+						isPressed={hasLink || false}
 					/>
 					{isLinkPickerOpen && (
 						<Popover

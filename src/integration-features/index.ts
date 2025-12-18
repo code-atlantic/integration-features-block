@@ -34,4 +34,4 @@ registerBlockType<IntegrationFeatureAttributes>(metadata.name, {
 	edit: Edit,
 	save: Save,
 	deprecated,
-} as BlockConfiguration<IntegrationFeatureAttributes>);
+} as unknown as BlockConfiguration<IntegrationFeatureAttributes>);

@@ -65,7 +65,7 @@ export default function Save({ attributes }: SaveProps) {
 		paddingBottom,
 		paddingLeft,
 		...blockPropsStyle
-	} = blockPropsRaw.style || {};
+	} = (blockPropsRaw.style || {}) as React.CSSProperties;
 
 	const blockProps = {
 		...blockPropsRaw,
@@ -105,7 +105,7 @@ export default function Save({ attributes }: SaveProps) {
 					borderStyle: blockProps.style?.borderStyle || undefined,
 					borderWidth: blockProps.style?.borderWidth || undefined,
 					borderBottomColor: blockProps.style?.borderColor || undefined,
-					borderBottomStyle: blockProps.style?.borderStyle || undefined,
+					borderBottomStyle: blockProps.style?.borderStyle as React.CSSProperties['borderBottomStyle'],
 					borderBottomWidth: blockProps.style?.borderWidth || undefined,
 					padding: padding || '2rem',
 					paddingTop: paddingTop || undefined,

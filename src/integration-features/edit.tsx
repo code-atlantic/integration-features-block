@@ -219,6 +219,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 			template: [],
 			templateLock: false,
 			allowedBlocks: ['core/paragraph', 'core/list', 'core/heading'],
+			// @ts-expect-error placeholder exists but not in types
 			placeholder: __('Add optional description...', 'popup-maker'),
 		}
 	);
@@ -236,9 +237,9 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 					<FontSizePicker
 						fontSizes={fontSizes}
 						value={fontSize}
-						onChange={(newSize) => setAttributes({ fontSize: newSize || '1.8rem' })}
+						onChange={(newSize: string | number | undefined) => setAttributes({ fontSize: typeof newSize === 'number' ? `${newSize}px` : (newSize || '1.8rem') })}
 						withReset={true}
-						resetFallbackFontSize="1.8rem"
+						fallbackFontSize={18}
 					/>
 				</PanelBody>
 			</InspectorControls>

@@ -56,7 +56,6 @@ const transforms = {
 	],
 };
 
-// @ts-expect-error - block.json editorStyle is array, but @wordpress/blocks types expect string
 registerBlockType<IntegrationFeaturesGroupAttributes>(
 	metadata.name,
 	{
@@ -65,5 +64,5 @@ registerBlockType<IntegrationFeaturesGroupAttributes>(
 		save: Save,
 		deprecated,
 		transforms,
-	} as BlockConfiguration<IntegrationFeaturesGroupAttributes>
+	} as unknown as BlockConfiguration<IntegrationFeaturesGroupAttributes>
 );

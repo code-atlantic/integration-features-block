@@ -154,11 +154,11 @@ export default function Save({ attributes }: SaveProps) {
 				<div
 					{...innerBlocksProps}
 					children={
-						Array.isArray(innerBlocksProps.children)
-							? innerBlocksProps.children.filter(
+						(Array.isArray(innerBlocksProps.children)
+							? (innerBlocksProps.children as React.ReactNode[]).filter(
 									(child) => !isEmptyContent(child)
 							  )
-							: innerBlocksProps.children
+							: innerBlocksProps.children) as React.ReactNode
 					}
 				/>
 			</details>

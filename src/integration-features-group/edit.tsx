@@ -13,10 +13,8 @@ import {
 } from '@wordpress/block-editor';
 import {
 	ToolbarGroup,
-	ToolbarDropdownMenu,
 	PanelBody,
 	ToggleControl,
-	ColorPalette,
 	SelectControl,
 	ButtonGroup,
 	Button,
@@ -154,7 +152,7 @@ export default function Edit({
 		paddingBottom,
 		paddingLeft,
 		...blockPropsStyle
-	} = blockPropsRaw.style || {};
+	} = (blockPropsRaw.style || {}) as React.CSSProperties;
 
 	const blockProps = {
 		...blockPropsRaw,
@@ -358,7 +356,7 @@ export default function Edit({
 						borderStyle: blockProps.style?.borderStyle || undefined,
 						borderWidth: blockProps.style?.borderWidth || undefined,
 						borderBottomColor: blockProps.style?.borderColor || undefined,
-						borderBottomStyle: blockProps.style?.borderStyle || undefined,
+						borderBottomStyle: blockProps.style?.borderStyle as React.CSSProperties['borderBottomStyle'],
 						borderBottomWidth: blockProps.style?.borderWidth || undefined,
 						padding: padding || '2rem',
 						paddingTop: paddingTop || undefined,

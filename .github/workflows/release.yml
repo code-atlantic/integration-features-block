@@ -50,9 +50,9 @@ jobs:
           cp LICENSE release/integration-features/ 2>/dev/null || true
 
           # Create the zip file
-          # Asset name must be $repo-*.zip for Git Updater (repo slug: integration-features-block)
+          # Asset name must be $repo-*.zip for Git Updater (repo slug: integration-features)
           cd release
-          zip -r ../integration-features-block-${{ steps.get_version.outputs.VERSION }}.zip integration-features
+          zip -r ../integration-features-${{ steps.get_version.outputs.VERSION }}.zip integration-features
           cd ..
 
       - name: Extract changelog for this version
@@ -73,7 +73,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: integration-features-block-${{ steps.get_version.outputs.VERSION }}.zip
+          files: integration-features-${{ steps.get_version.outputs.VERSION }}.zip
           body_path: changelog_extract.txt
           draft: false
           prerelease: ${{ contains(github.ref, '-beta') || contains(github.ref, '-alpha') || contains(github.ref, '-rc') }}

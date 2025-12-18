@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create plugin zip
+        run: |
+          # Create a clean directory for the release
+          mkdir -p release/integration-features
+
+          # Copy only the files needed for production
+          cp -r build release/integration-features/
+          cp integration-features.php release/integration-features/
+          cp readme.txt release/integration-features/ 2>/dev/null || true
+          cp CHANGELOG.md release/integration-features/ 2>/dev/null || true
+          cp LICENSE release/integration-features/ 2>/dev/null || true
+
+          # Create the zip file
+          cd release
+          zip -r ../integration-features-${{ steps.get_version.outputs.VERSION }}.zip integration-features
+          cd ..
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          # Extract changelog section for this version
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          CHANGELOG=$(awk "/^## \[?${VERSION}\]?/,/^## \[?[0-9]/" CHANGELOG.md | sed '$d' | tail -n +2)
+
+          # If no changelog found, use a default message
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="Release version ${VERSION}"
+          fi
+
+          # Write to file for multi-line support
+          echo "$CHANGELOG" > changelog_extract.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: integration-features-${{ steps.get_version.outputs.VERSION }}.zip
+          body_path: changelog_extract.txt
+          draft: false
+          prerelease: ${{ contains(github.ref, '-beta') || contains(github.ref, '-alpha') || contains(github.ref, '-rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

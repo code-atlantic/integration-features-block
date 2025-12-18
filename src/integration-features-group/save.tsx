@@ -74,11 +74,15 @@ export default function Save({ attributes }: SaveProps) {
 
 	/**
 	 * InnerBlocks props for features
+	 *
+	 * NOTE: We intentionally do NOT include is-hidden class here.
+	 * Content should be visible by default for:
+	 * - SEO (Googlebot doesn't execute JS)
+	 * - Accessibility (no-JS users)
+	 * JavaScript adds is-hidden class on init when groupCollapsed is true.
 	 */
 	const innerBlocksProps = useInnerBlocksProps.save({
-		className: `pm-integration-features-group__features ${
-			groupCollapsed ? 'is-hidden' : ''
-		}`,
+		className: 'pm-integration-features-group__features',
 		style: {
 			backgroundColor: blockProps.style?.backgroundColor || undefined,
 			color: blockProps.style?.color || undefined,

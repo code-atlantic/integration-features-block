@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.3.0] - 2024-12-18
+
+### Added
+- GitHub Updater support for automatic plugin updates via GitHub releases
+- GitHub Actions release workflow for automated builds
+- SEO-focused tests for no-JS accessibility compliance
+
+### Changed
+- **BREAKING**: Features container no longer includes `is-hidden` class in save output
+  - Content now defaults to visible for SEO (Googlebot) and no-JS users
+  - JavaScript adds `is-hidden` class on init when `groupCollapsed` is true
+  - Progressive enhancement pattern: works without JS, enhances with JS
+  - **Note**: Existing saved blocks will update to new behavior when re-saved in editor
+
+### Fixed
+- SEO issue where collapsed groups were hidden from search engine crawlers
+- Accessibility issue where no-JS users couldn't see collapsed group content
+
 ## [0.2.4] - 2024-12-15
 
 ### Changed

@@ -1,16 +1,23 @@
 <?php
 /**
  * Plugin Name:       Integration Features
- * Description:       Example block scaffolded with Create Block tool.
- * Version:           0.2.4
+ * Plugin URI:        https://github.com/code-atlantic/integration-features
+ * Description:       Gutenberg blocks for displaying integration features with tier badges, accordion descriptions, and group organization.
+ * Version:           0.3.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
+ * Author:            Code Atlantic
+ * Author URI:        https://code-atlantic.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       integration-features
  *
- * @package CreateBlock
+ * GitHub Plugin URI: code-atlantic/integration-features-block
+ * GitHub Branch:     main
+ * Primary Branch:    main
+ * Release Asset:     true
+ *
+ * @package IntegrationFeatures
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

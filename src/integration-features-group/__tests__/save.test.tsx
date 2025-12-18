@@ -190,4 +190,60 @@ describe('Save Component', () => {
 		// Features are always in the HTML, frontend JS controls visibility
 		expect(featuresDiv).toBeInTheDocument();
 	});
+
+	describe('SEO and No-JS Accessibility', () => {
+		it('does NOT include is-hidden class in save output (progressive enhancement)', () => {
+			const { container } = render(
+				<Save
+					attributes={{
+						...defaultAttributes,
+						groupCollapsed: true,
+					}}
+				/>
+			);
+
+			const featuresDiv = container.querySelector(
+				'.pm-integration-features-group__features'
+			);
+			// is-hidden should NOT be in save output - JS adds it on init
+			// This ensures content is visible for Googlebot and no-JS users
+			expect(featuresDiv).not.toHaveClass('is-hidden');
+		});
+
+		it('features container is visible by default for SEO crawlers', () => {
+			const { container } = render(
+				<Save
+					attributes={{
+						...defaultAttributes,
+						groupCollapsed: true,
+						hasFeatures: true,
+					}}
+				/>
+			);
+
+			const featuresDiv = container.querySelector(
+				'.pm-integration-features-group__features'
+			);
+			// Content should be indexable - no display:none in initial HTML
+			expect(featuresDiv).toBeInTheDocument();
+			expect(featuresDiv?.className).not.toContain('hidden');
+		});
+
+		it('is-collapsed class IS included on wrapper (visual styling only, not hiding)', () => {
+			const { container } = render(
+				<Save
+					attributes={{
+						...defaultAttributes,
+						groupCollapsed: true,
+					}}
+				/>
+			);
+
+			const blockDiv = container.querySelector(
+				'.pm-integration-features-group'
+			);
+			// is-collapsed affects border-radius styling, not visibility
+			expect(blockDiv).toHaveClass('is-collapsed');
+		});
+	});
 });
